@@ -36,11 +36,11 @@ const gstr1Data = [
 export default function GstReportsPage() {
     return (
         <div className="space-y-4">
-            <div className="flex items-center justify-between px-1">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-1">
                 <h1 className="text-2xl font-bold tracking-tight">GST Reports</h1>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                     <Select defaultValue="feb-2026">
-                        <SelectTrigger className="w-[180px] h-9">
+                        <SelectTrigger className="w-full sm:w-[180px] h-9">
                             <SelectValue placeholder="Period" />
                         </SelectTrigger>
                         <SelectContent>
@@ -49,8 +49,8 @@ export default function GstReportsPage() {
                             <SelectItem value="dec-2025">December 2025</SelectItem>
                         </SelectContent>
                     </Select>
-                    <Button className="h-9 gap-2 bg-emerald-600 hover:bg-emerald-700 font-bold">
-                        <Download className="h-4 w-4" /> Download JSON (GSTR-1)
+                    <Button className="h-9 gap-2 bg-emerald-600 hover:bg-emerald-700 font-bold whitespace-nowrap">
+                        <Download className="h-4 w-4" /> Download JSON
                     </Button>
                 </div>
             </div>
@@ -86,16 +86,16 @@ export default function GstReportsPage() {
                 </Card>
             </div>
 
-            <Tabs defaultValue="gstr1" className="bg-background rounded-xl shadow-sm border">
-                <div className="px-6 pt-4 border-b bg-muted/20">
-                    <TabsList className="h-10 bg-transparent gap-6">
-                        <TabsTrigger value="gstr1" className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none px-0 font-bold uppercase text-xs tracking-widest">GSTR-1 (Sales)</TabsTrigger>
-                        <TabsTrigger value="gstr3b" className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none px-0 font-bold uppercase text-xs tracking-widest">GSTR-3B (Summary)</TabsTrigger>
-                        <TabsTrigger value="itc" className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none px-0 font-bold uppercase text-xs tracking-widest">ITC Ledger</TabsTrigger>
+            <Tabs defaultValue="gstr1" className="bg-background rounded-xl shadow-sm border overflow-hidden">
+                <div className="px-4 sm:px-6 pt-4 border-b bg-muted/20 overflow-x-auto scrollbar-hide">
+                    <TabsList className="h-10 bg-transparent gap-4 sm:gap-6 w-full justify-start sm:justify-start">
+                        <TabsTrigger value="gstr1" className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none px-0 font-bold uppercase text-[10px] sm:text-xs tracking-widest whitespace-nowrap">GSTR-1 (Sales)</TabsTrigger>
+                        <TabsTrigger value="gstr3b" className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none px-0 font-bold uppercase text-[10px] sm:text-xs tracking-widest whitespace-nowrap">GSTR-3B (Summary)</TabsTrigger>
+                        <TabsTrigger value="itc" className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:shadow-none rounded-none px-0 font-bold uppercase text-[10px] sm:text-xs tracking-widest whitespace-nowrap">ITC Ledger</TabsTrigger>
                     </TabsList>
                 </div>
 
-                <TabsContent value="gstr1" className="p-6">
+                <TabsContent value="gstr1" className="p-4 sm:p-6 outline-none">
                     <div className="flex flex-col md:flex-row gap-4 mb-6 items-center justify-between">
                         <div className="flex items-center gap-2">
                             <Button variant="outline" size="sm" className="h-9 gap-2">
@@ -111,43 +111,43 @@ export default function GstReportsPage() {
                         </div>
                     </div>
 
-                    <div className="rounded-md border">
-                        <Table>
+                    <div className="rounded-md border overflow-x-auto scrollbar-thin">
+                        <Table className="min-w-[800px]">
                             <TableHeader>
                                 <TableRow className="bg-muted/50 uppercase text-[10px] font-black">
-                                    <TableHead>Inv Number</TableHead>
-                                    <TableHead>Customer</TableHead>
-                                    <TableHead>GST Number</TableHead>
-                                    <TableHead className="text-right">Taxable Value</TableHead>
-                                    <TableHead className="text-center">Rate</TableHead>
-                                    <TableHead className="text-right">IGST</TableHead>
-                                    <TableHead className="text-right">CGST</TableHead>
-                                    <TableHead className="text-right">SGST</TableHead>
-                                    <TableHead className="text-right">Total</TableHead>
+                                    <TableHead className="whitespace-nowrap">Inv Number</TableHead>
+                                    <TableHead className="whitespace-nowrap">Customer</TableHead>
+                                    <TableHead className="whitespace-nowrap">GST Number</TableHead>
+                                    <TableHead className="text-right whitespace-nowrap">Taxable Value</TableHead>
+                                    <TableHead className="text-center whitespace-nowrap">Rate</TableHead>
+                                    <TableHead className="text-right whitespace-nowrap">IGST</TableHead>
+                                    <TableHead className="text-right whitespace-nowrap">CGST</TableHead>
+                                    <TableHead className="text-right whitespace-nowrap">SGST</TableHead>
+                                    <TableHead className="text-right whitespace-nowrap">Total</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {gstr1Data.map((row, i) => (
                                     <TableRow key={i} className="text-xs group hover:bg-muted/5">
-                                        <TableCell className="font-bold text-blue-600">{row.id}</TableCell>
-                                        <TableCell className="font-bold">{row.customer}</TableCell>
-                                        <TableCell className="font-mono text-[10px] opacity-70">{row.gstNo}</TableCell>
-                                        <TableCell className="text-right font-medium">₹{row.taxableValue.toLocaleString()}</TableCell>
-                                        <TableCell className="text-center font-bold text-slate-500">{row.gstRate}</TableCell>
-                                        <TableCell className="text-right font-bold text-slate-600">{row.igst > 0 ? `₹${row.igst.toLocaleString()}` : '-'}</TableCell>
-                                        <TableCell className="text-right font-bold text-slate-600">{row.cgst > 0 ? `₹${row.cgst.toLocaleString()}` : '-'}</TableCell>
-                                        <TableCell className="text-right font-bold text-slate-600">{row.sgst > 0 ? `₹${row.sgst.toLocaleString()}` : '-'}</TableCell>
-                                        <TableCell className="text-right font-black text-slate-800">₹{row.total.toLocaleString()}</TableCell>
+                                        <TableCell className="font-bold text-blue-600 whitespace-nowrap">{row.id}</TableCell>
+                                        <TableCell className="font-bold whitespace-nowrap">{row.customer}</TableCell>
+                                        <TableCell className="font-mono text-[10px] opacity-70 whitespace-nowrap">{row.gstNo}</TableCell>
+                                        <TableCell className="text-right font-medium whitespace-nowrap">₹{row.taxableValue.toLocaleString()}</TableCell>
+                                        <TableCell className="text-center font-bold text-slate-500 whitespace-nowrap">{row.gstRate}</TableCell>
+                                        <TableCell className="text-right font-bold text-slate-600 whitespace-nowrap">{row.igst > 0 ? `₹${row.igst.toLocaleString()}` : '-'}</TableCell>
+                                        <TableCell className="text-right font-bold text-slate-600 whitespace-nowrap">{row.cgst > 0 ? `₹${row.cgst.toLocaleString()}` : '-'}</TableCell>
+                                        <TableCell className="text-right font-bold text-slate-600 whitespace-nowrap">{row.sgst > 0 ? `₹${row.sgst.toLocaleString()}` : '-'}</TableCell>
+                                        <TableCell className="text-right font-black text-slate-800 whitespace-nowrap">₹{row.total.toLocaleString()}</TableCell>
                                     </TableRow>
                                 ))}
                                 <TableRow className="bg-slate-50 font-black text-xs">
-                                    <TableCell colSpan={3} className="text-right uppercase tracking-widest text-muted-foreground">Monthly Totals</TableCell>
-                                    <TableCell className="text-right">₹40,000</TableCell>
+                                    <TableCell colSpan={3} className="text-right uppercase tracking-widest text-muted-foreground whitespace-nowrap">Monthly Totals</TableCell>
+                                    <TableCell className="text-right whitespace-nowrap">₹40,000</TableCell>
                                     <TableCell></TableCell>
-                                    <TableCell className="text-right">₹1,800</TableCell>
-                                    <TableCell className="text-right">₹2,550</TableCell>
-                                    <TableCell className="text-right">₹2,550</TableCell>
-                                    <TableCell className="text-right text-sm">₹46,900</TableCell>
+                                    <TableCell className="text-right whitespace-nowrap">₹1,800</TableCell>
+                                    <TableCell className="text-right whitespace-nowrap">₹2,550</TableCell>
+                                    <TableCell className="text-right whitespace-nowrap">₹2,550</TableCell>
+                                    <TableCell className="text-right text-sm whitespace-nowrap">₹46,900</TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>

@@ -75,19 +75,19 @@ function NewOrderView({ onBack, onSave }: { onBack: () => void, onSave: (o: Outs
             </div>
 
             <Card className="border-none shadow-sm overflow-hidden">
-                <div className="bg-cyan-500 text-white px-6 py-3 font-bold text-sm">
+                <div className="bg-cyan-600 text-white px-5 py-2.5 font-bold text-xs uppercase tracking-wider">
                     New Out Source Order
                 </div>
-                <CardContent className="p-8 space-y-8 bg-background">
+                <CardContent className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8 bg-background">
                     {/* Basic Info */}
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                         <div className="space-y-1.5">
                             <Label className="text-xs font-bold text-slate-600 flex items-center gap-1">
                                 Select Printer <span className="text-rose-500">*</span>
                             </Label>
                             <div className="flex gap-2">
                                 <Select>
-                                    <SelectTrigger className="h-10">
+                                    <SelectTrigger className="h-10 text-xs">
                                         <SelectValue placeholder="Please Select" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -104,7 +104,7 @@ function NewOrderView({ onBack, onSave }: { onBack: () => void, onSave: (o: Outs
                             <Label className="text-xs font-bold text-slate-600 flex items-center gap-1">
                                 <Info className="h-3 w-3" /> Job Name <span className="text-rose-500">*</span>
                             </Label>
-                            <Input placeholder="Enter Job Name" className="h-10" />
+                            <Input placeholder="Enter Job Name" className="h-10 text-xs" />
                         </div>
 
                         <div className="space-y-1.5">
@@ -112,7 +112,7 @@ function NewOrderView({ onBack, onSave }: { onBack: () => void, onSave: (o: Outs
                                 <Flag className="h-3 w-3" /> Order Status
                             </Label>
                             <Select defaultValue="pending">
-                                <SelectTrigger className="h-10">
+                                <SelectTrigger className="h-10 text-xs">
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -127,57 +127,57 @@ function NewOrderView({ onBack, onSave }: { onBack: () => void, onSave: (o: Outs
                             <Label className="text-xs font-bold text-slate-600 flex items-center gap-1">
                                 <Calendar className="h-3 w-3" /> Job Date <span className="text-rose-500">*</span>
                             </Label>
-                            <Input type="datetime-local" className="h-10" defaultValue="2026-02-11T04:54" />
+                            <Input type="datetime-local" className="h-10 text-xs" defaultValue="2026-02-11T04:54" />
                         </div>
                     </div>
 
                     {/* PO Type Selection */}
-                    <div className="flex flex-col items-center gap-4 py-4 bg-muted/20 rounded-lg">
-                        <Label className="text-sm font-bold">PO Type {poType}</Label>
+                    <div className="flex flex-col items-center gap-3 py-4 bg-muted/20 rounded-lg">
+                        <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">PO Type Selection</Label>
                         <RadioGroup
                             value={poType}
                             onValueChange={(v: "Flex" | "Offset" | "Digital") => setPoType(v)}
-                            className="flex gap-8"
+                            className="flex flex-wrap justify-center gap-4 sm:gap-8"
                         >
-                            <div className="flex items-center space-x-2 cursor-pointer">
+                            <div className="flex items-center space-x-2 cursor-pointer bg-background px-3 py-1.5 rounded-md border shadow-sm">
                                 <RadioGroupItem value="Flex" id="flex" />
-                                <Label htmlFor="flex" className="font-bold cursor-pointer text-slate-600">Flex</Label>
+                                <Label htmlFor="flex" className="font-bold cursor-pointer text-xs">Flex</Label>
                             </div>
-                            <div className="flex items-center space-x-2 cursor-pointer">
+                            <div className="flex items-center space-x-2 cursor-pointer bg-background px-3 py-1.5 rounded-md border shadow-sm">
                                 <RadioGroupItem value="Offset" id="offset" />
-                                <Label htmlFor="offset" className="font-bold cursor-pointer text-slate-600">Offset</Label>
+                                <Label htmlFor="offset" className="font-bold cursor-pointer text-xs">Offset</Label>
                             </div>
-                            <div className="flex items-center space-x-2 cursor-pointer">
+                            <div className="flex items-center space-x-2 cursor-pointer bg-background px-3 py-1.5 rounded-md border shadow-sm">
                                 <RadioGroupItem value="Digital" id="digital" />
-                                <Label htmlFor="digital" className="font-bold cursor-pointer text-slate-600">Digital</Label>
+                                <Label htmlFor="digital" className="font-bold cursor-pointer text-xs">Digital</Label>
                             </div>
                         </RadioGroup>
                     </div>
 
                     {/* Form Sections */}
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-x-8 gap-y-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                         {/* Row 1 */}
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">Job/Order Size</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Job/Order Size</Label>
                             <div className="relative">
                                 <Maximize className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input className="h-10 pl-9" placeholder="Size" />
+                                <Input className="h-10 pl-9 text-xs" placeholder="Size" />
                             </div>
                         </div>
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">Job/Order Quantity</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Job/Order Quantity</Label>
                             <div className="relative">
                                 <Box className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input className="h-10 pl-9" placeholder="Enter Job Quantity" />
+                                <Input className="h-10 pl-9 text-xs" placeholder="Quantity" />
                             </div>
                         </div>
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">Printing Side</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Printing Side</Label>
                             <div className="relative">
                                 <Layers className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                                 <Select>
-                                    <SelectTrigger className="h-10 pl-9">
-                                        <SelectValue placeholder="Select Side" />
+                                    <SelectTrigger className="h-10 pl-9 text-xs">
+                                        <SelectValue placeholder="Side" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="single">Single Sided</SelectItem>
@@ -187,12 +187,12 @@ function NewOrderView({ onBack, onSave }: { onBack: () => void, onSave: (o: Outs
                             </div>
                         </div>
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">Select Machine</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Select Machine</Label>
                             <div className="relative">
                                 <Gauge className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                                 <Select>
-                                    <SelectTrigger className="h-10 pl-9">
-                                        <SelectValue placeholder="Select Machine" />
+                                    <SelectTrigger className="h-10 pl-9 text-xs">
+                                        <SelectValue placeholder="Machine" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="sm74">Heidelberg SM 74</SelectItem>
@@ -204,39 +204,39 @@ function NewOrderView({ onBack, onSave }: { onBack: () => void, onSave: (o: Outs
 
                         {/* Row 2: Paper Details */}
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">Paper Sheet Size</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Paper Sheet Size</Label>
                             <div className="relative">
                                 <Maximize className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input className="h-10 pl-9" placeholder="Size" />
+                                <Input className="h-10 pl-9 text-xs" placeholder="Size" />
                             </div>
                         </div>
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">Paper Sheet Quantity</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Paper Quantity</Label>
                             <div className="relative">
                                 <Box className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input className="h-10 pl-9" defaultValue="0" />
+                                <Input className="h-10 pl-9 text-xs" defaultValue="0" />
                             </div>
                         </div>
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">Paper Sheet Name</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Paper Name</Label>
                             <div className="relative">
                                 <Type className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input className="h-10 pl-9" placeholder="Paper Name" />
+                                <Input className="h-10 pl-9 text-xs" placeholder="Paper Name" />
                             </div>
                         </div>
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">Paper Sheet GSM</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Paper GSM</Label>
                             <div className="grid grid-cols-2 gap-2">
-                                <Badge variant="outline" className="h-10 flex items-center justify-center font-bold">GSM</Badge>
-                                <Input className="h-10" placeholder="GSM" />
+                                <Badge variant="outline" className="h-10 flex items-center justify-center font-bold text-[10px]">GSM</Badge>
+                                <Input className="h-10 text-xs" placeholder="GSM" />
                             </div>
                         </div>
 
                         {/* Row 3: CTP Details */}
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">CTP Type</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">CTP Type</Label>
                             <Select defaultValue="ctp">
-                                <SelectTrigger className="h-10">
+                                <SelectTrigger className="h-10 text-xs text-blue-600 font-bold">
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -246,113 +246,112 @@ function NewOrderView({ onBack, onSave }: { onBack: () => void, onSave: (o: Outs
                             </Select>
                         </div>
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">CTP Vendor</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">CTP Vendor</Label>
                             <div className="relative">
                                 <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input className="h-10 pl-9" placeholder="Vendor" />
+                                <Input className="h-10 pl-9 text-xs" placeholder="Vendor" />
                             </div>
                         </div>
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">CTP Size</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">CTP Size</Label>
                             <div className="relative">
                                 <Maximize className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input className="h-10 pl-9" placeholder="Enter CTP Size" />
+                                <Input className="h-10 pl-9 text-xs" placeholder="Enter CTP Size" />
                             </div>
                         </div>
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">CTP Sets</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">CTP Sets</Label>
                             <div className="grid grid-cols-3 gap-2">
-                                <Badge variant="outline" className="h-10 flex items-center justify-center font-bold">123</Badge>
-                                <Input className="h-10 col-span-2" placeholder="Enter CTP Sets" />
+                                <Badge variant="outline" className="h-10 flex items-center justify-center font-bold text-[10px]">123</Badge>
+                                <Input className="h-10 col-span-2 text-xs" placeholder="Sets" />
                             </div>
                         </div>
 
-                        {/* Row 4: Finishings */}
+                        {/* Row 4: Extra Details */}
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">Gripper Details</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Gripper Details</Label>
                             <div className="grid grid-cols-2 gap-2">
-                                <Badge variant="outline" className="h-10 flex items-center justify-center font-bold px-0">Gripper</Badge>
-                                <Input className="h-10" placeholder="Enter Gripper" />
+                                <Badge variant="outline" className="h-10 flex items-center justify-center font-bold px-0 text-[10px]">Gripper</Badge>
+                                <Input className="h-10 text-xs" placeholder="Details" />
                             </div>
                         </div>
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">Dot Details</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Dot Details</Label>
                             <div className="grid grid-cols-3 gap-2">
                                 <div className="h-10 border rounded flex items-center justify-center bg-muted/20">
                                     <Settings className="h-4 w-4 text-muted-foreground" />
                                 </div>
-                                <Input className="h-10 col-span-2" placeholder="Enter Dot Details" />
+                                <Input className="h-10 col-span-2 text-xs" placeholder="Dots" />
                             </div>
                         </div>
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">Printing Run</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Printing Run</Label>
                             <div className="relative">
                                 <Printer className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input className="h-10 pl-9" placeholder="Enter Printing Run" />
+                                <Input className="h-10 pl-9 text-xs" placeholder="Run" />
                             </div>
                         </div>
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">Digital Proof Attached</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Digital Proof</Label>
                             <RadioGroup defaultValue="no" className="flex gap-4 h-10 items-center">
                                 <div className="flex items-center space-x-2">
                                     <RadioGroupItem value="yes" id="proof-yes" />
-                                    <Label htmlFor="proof-yes">Yes</Label>
+                                    <Label htmlFor="proof-yes" className="text-xs">Yes</Label>
                                 </div>
                                 <div className="flex items-center space-x-2 text-blue-600 font-bold">
                                     <RadioGroupItem value="no" id="proof-no" />
-                                    <Label htmlFor="proof-no">No</Label>
+                                    <Label htmlFor="proof-no" className="text-xs">No</Label>
                                 </div>
                             </RadioGroup>
                         </div>
 
-                        {/* Extra rows matching the screenshot */}
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">Color</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Color</Label>
                             <div className="relative">
                                 <PaletteIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input className="h-10 pl-9" />
+                                <Input className="h-10 pl-9 text-xs" />
                             </div>
                         </div>
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">Numbering</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Numbering</Label>
                             <div className="grid grid-cols-3 gap-2">
-                                <Badge variant="outline" className="h-10 flex items-center justify-center font-bold">123</Badge>
-                                <Input className="h-10 col-span-2" placeholder="Enter Numbering" />
+                                <Badge variant="outline" className="h-10 flex items-center justify-center font-bold text-[10px]">123</Badge>
+                                <Input className="h-10 col-span-2 text-xs" placeholder="Numbering" />
                             </div>
                         </div>
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">Sequencing</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Sequencing</Label>
                             <div className="relative">
                                 <ArrowRightLeftIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input className="h-10 pl-9" placeholder="Enter Sequencing" />
+                                <Input className="h-10 pl-9 text-xs" placeholder="Sequencing" />
                             </div>
                         </div>
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">Lamination Type</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Lamination</Label>
                             <div className="relative">
                                 <Layers className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input className="h-10 pl-9" placeholder="Lamination Type" />
+                                <Input className="h-10 pl-9 text-xs" placeholder="Lamination" />
                             </div>
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">Binding Type</Label>
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Binding Type</Label>
                             <div className="relative">
                                 <Scissors className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input className="h-10 pl-9" placeholder="Binding Type" />
+                                <Input className="h-10 pl-9 text-xs" placeholder="Binding" />
                             </div>
                         </div>
-                        <div className="col-span-3 space-y-1.5">
-                            <Label className="text-xs font-bold text-slate-600">Other Instructions</Label>
-                            <Input className="h-10" />
+                        <div className="col-span-1 sm:col-span-2 lg:col-span-3 space-y-1.5">
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Other Instructions</Label>
+                            <Input className="h-10 text-xs" placeholder="Any additional notes..." />
                         </div>
                     </div>
 
                     <Separator />
 
-                    <div className="flex justify-end gap-3 pt-6">
-                        <Button variant="outline" className="h-11 px-8 font-bold" onClick={onBack}>Cancel</Button>
-                        <Button className="h-11 px-10 bg-blue-600 hover:bg-blue-700 font-bold">Save Reading</Button>
+                    <div className="flex flex-col sm:flex-row justify-end gap-3 pt-6">
+                        <Button variant="outline" className="h-11 px-8 font-bold order-2 sm:order-1" onClick={onBack}>Cancel</Button>
+                        <Button className="h-11 px-10 bg-blue-600 hover:bg-blue-700 font-bold order-1 sm:order-2">Save Outsource Order</Button>
                     </div>
                 </CardContent>
             </Card>
