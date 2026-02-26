@@ -70,14 +70,19 @@ function CreateInvoiceDialog({ onClose }: { onClose: () => void }) {
     const grandTotal = subtotal + taxAmt
 
     return (
-        <DialogContent className="max-w-5xl max-h-[95vh] overflow-y-auto p-0 border-none shadow-2xl rounded-2xl">
-            <DialogHeader className="px-8 py-6 border-b bg-background sticky top-0 z-20">
-                <div className="flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-blue-600" />
-                    <DialogTitle className="text-xl font-bold">Create New Sales Invoice</DialogTitle>
+        <DialogContent className="max-w-5xl p-0 overflow-hidden border-none shadow-2xl rounded-3xl flex flex-col max-h-[92vh]">
+            <DialogHeader className="px-10 pt-10 pb-6 text-left border-b">
+                <div className="flex items-center gap-4 mb-2">
+                    <div className="p-3 rounded-2xl bg-blue-50 text-blue-600 shadow-sm border border-blue-100/50">
+                        <FileText className="h-5 w-5" />
+                    </div>
+                    <DialogTitle className="text-2xl font-black tracking-tight text-slate-800">Create Sales Invoice</DialogTitle>
                 </div>
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 pl-1">
+                    Generate a new GST invoice for your customer
+                </p>
             </DialogHeader>
-            <div className="p-8 space-y-8 bg-background">
+            <div className="px-10 py-8 space-y-8 flex-1 overflow-y-auto custom-scrollbar">
                 {/* Invoice Details */}
                 <Card className="border shadow-sm border-slate-200 overflow-hidden">
                     <CardHeader className="py-3 px-6 bg-slate-50 border-b">
@@ -212,10 +217,16 @@ function CreateInvoiceDialog({ onClose }: { onClose: () => void }) {
                     </CardContent>
                 </Card>
 
-                <div className="flex gap-3 justify-end pt-1">
-                    <Button variant="outline" className="font-bold h-10 px-6" onClick={onClose}>Cancel</Button>
+                <div className="p-8 border-t bg-slate-50/50 flex items-center justify-end gap-3 px-10">
                     <Button
-                        className="h-10 px-8 bg-emerald-600 hover:bg-emerald-700 font-bold uppercase text-xs tracking-wider"
+                        variant="ghost"
+                        className="h-11 px-8 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-colors"
+                        onClick={onClose}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        className="h-11 px-8 rounded-xl bg-blue-600 hover:bg-blue-700 font-bold text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-200 transition-all"
                         onClick={() => {
                             toast.success("Invoice Generated", { description: "Invoice INV-2026-0030 has been created successfully." })
                             onClose()

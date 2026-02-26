@@ -27,6 +27,15 @@ import { Textarea } from "@/components/ui/textarea"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Users2, Phone, MapPin, ExternalLink as ExtLink } from "lucide-react"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 type Vendor = {
@@ -367,6 +376,7 @@ export default function OutsourcePage() {
     const [orders, setOrders] = useState<OutsourceOrder[]>(initialOrders)
     const [vendorsList, setVendorsList] = useState<Vendor[]>(initialVendors)
     const [search, setSearch] = useState("")
+    const [isAddVendorOpen, setIsAddVendorOpen] = useState(false)
 
     if (view === "new") {
         return <NewOrderView onBack={() => setView("list")} onSave={() => setView("list")} />
@@ -471,9 +481,92 @@ export default function OutsourcePage() {
                         <CardHeader className="pb-4 border-b">
                             <div className="flex items-center justify-between">
                                 <CardTitle className="text-sm font-medium">Approved Printers & Vendors</CardTitle>
-                                <Button className="gap-2 bg-blue-600 hover:bg-blue-700 font-bold h-9 text-xs shadow-sm">
-                                    <Plus className="h-4 w-4" /> Add Vendor
-                                </Button>
+                                <Dialog open={isAddVendorOpen} onOpenChange={setIsAddVendorOpen}>
+                                    <DialogTrigger asChild>
+                                        <Button className="gap-2 bg-blue-600 hover:bg-blue-700 font-bold h-9 text-xs shadow-sm">
+                                            <Plus className="h-4 w-4" /> Add Vendor
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden border-none shadow-2xl rounded-3xl flex flex-col max-h-[92vh]">
+                                        <DialogHeader className="px-10 pt-10 pb-6 text-left border-b">
+                                            <div className="flex items-center gap-4 mb-2">
+                                                <div className="p-3 rounded-2xl bg-blue-50 text-blue-600 shadow-sm border border-blue-100/50">
+                                                    <Users2 className="h-5 w-5" />
+                                                </div>
+                                                <DialogTitle className="text-2xl font-black tracking-tight text-slate-800">Add New Vendor</DialogTitle>
+                                            </div>
+                                            <DialogDescription className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 pl-1">
+                                                Onboard a new outsourcing partner
+                                            </DialogDescription>
+                                        </DialogHeader>
+
+                                        <div className="px-10 py-8 space-y-8 flex-1 overflow-y-auto custom-scrollbar">
+                                            {/* 01: Identification */}
+                                            <div className="space-y-4">
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-[10px] font-black text-white">01</span>
+                                                    <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Identification</h3>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Vendor / Business Name <span className="text-rose-500">*</span></Label>
+                                                    <Input className="h-12 rounded-xl border-slate-200 bg-blue-50/30 font-bold text-slate-700 px-4 focus-visible:ring-blue-500/20" placeholder="e.g. Galaxy Flex Printing" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Specialization</Label>
+                                                    <Select>
+                                                        <SelectTrigger className="h-12 rounded-xl border-slate-100 bg-white font-medium text-slate-600 px-4">
+                                                            <SelectValue placeholder="Select Type" />
+                                                        </SelectTrigger>
+                                                        <SelectContent className="rounded-xl">
+                                                            <SelectItem value="ctp">CTP Plates</SelectItem>
+                                                            <SelectItem value="flex">Flex Printing</SelectItem>
+                                                            <SelectItem value="binding">Finishing / Binding</SelectItem>
+                                                            <SelectItem value="offset">Offset Printing</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                </div>
+                                            </div>
+
+                                            {/* 02: Contact Details */}
+                                            <div className="space-y-4">
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-[10px] font-black text-white">02</span>
+                                                    <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Contact Details</h3>
+                                                </div>
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    <div className="space-y-2">
+                                                        <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Contact Number</Label>
+                                                        <Input className="h-12 rounded-xl border-slate-100 bg-white font-medium text-slate-600 px-4" placeholder="99xxxxxxxx" />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Email Address</Label>
+                                                        <Input type="email" className="h-12 rounded-xl border-slate-100 bg-white font-medium text-slate-600 px-4" placeholder="vendor@example.com" />
+                                                    </div>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Office Address</Label>
+                                                    <Textarea className="min-h-[100px] rounded-xl border-slate-100 bg-white font-medium text-slate-600 p-4 resize-none focus-visible:ring-blue-500/20" placeholder="Full business address..." />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <DialogFooter className="p-8 mt-2 flex flex-row items-center justify-end gap-3 px-10 border-t bg-slate-50/50">
+                                            <Button
+                                                variant="ghost"
+                                                className="h-11 px-8 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-colors"
+                                                onClick={() => setIsAddVendorOpen(false)}
+                                            >
+                                                Cancel
+                                            </Button>
+                                            <Button
+                                                className="h-11 px-8 rounded-xl bg-blue-600 hover:bg-blue-700 font-bold text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-200 transition-all"
+                                                onClick={() => setIsAddVendorOpen(false)}
+                                            >
+                                                Save Vendor Profile
+                                            </Button>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
                             </div>
                         </CardHeader>
                         <CardContent className="pt-6">

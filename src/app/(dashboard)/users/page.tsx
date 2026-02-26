@@ -19,8 +19,11 @@ import {
     CheckCircle,
     UserCircle,
     MoreHorizontal,
-    Eye
+    Eye,
+    Activity,
+    Scale
 } from "lucide-react"
+import { Textarea } from "@/components/ui/textarea"
 import {
     Table,
     TableBody,
@@ -74,87 +77,124 @@ const initialCustomers: Customer[] = [
 ]
 
 // ─── New Customer Dialog ──────────────────────────────────────────────────────
+// ─── New Customer Dialog ──────────────────────────────────────────────────────
 function AddCustomerDialog({ onSave, onClose }: { onSave: (c: Customer) => void, onClose: () => void }) {
     return (
-        <DialogContent className="max-w-3xl p-0 border-none shadow-2xl overflow-y-auto max-h-[95vh]">
-            <DialogHeader className="px-8 pt-7 pb-4 border-b bg-background sticky top-0 z-20">
-                <div className="flex items-center gap-2">
-                    <UserCircle className="h-5 w-5 text-blue-600" />
-                    <DialogTitle className="text-xl font-bold">Register New Customer</DialogTitle>
+        <DialogContent className="sm:max-w-[600px] p-0 border-none shadow-2xl overflow-hidden rounded-2xl flex flex-col max-h-[92vh]">
+            <DialogHeader className="px-8 pt-8 pb-6 border-b">
+                <div className="flex items-center gap-3">
+                    <div className="p-2.5 rounded-full bg-blue-50 text-blue-600">
+                        <UserCircle className="h-5 w-5" />
+                    </div>
+                    <div>
+                        <DialogTitle className="text-xl font-bold text-slate-900 tracking-tight">Add New Customer</DialogTitle>
+                        <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-muted-foreground mt-1">
+                            Create Master Profile for Billing & Jobs
+                        </p>
+                    </div>
                 </div>
             </DialogHeader>
-            <div className="p-8 space-y-8 bg-background">
-                <Card className="border shadow-sm border-slate-200 overflow-hidden">
-                    <CardHeader className="py-3 px-6 bg-slate-50 border-b">
-                        <CardTitle className="text-[10px] font-black uppercase text-slate-500 tracking-wider flex items-center gap-2">
-                            <Building2 className="h-3.5 w-3.5" /> Company Information
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-8 space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <Label className="text-xs font-black uppercase text-slate-500 tracking-tight">Company Name <span className="text-rose-500">*</span></Label>
-                                <Input className="h-11 border-slate-200 focus:border-blue-400 focus:ring-blue-100" placeholder="Enter business name" />
-                            </div>
-                            <div className="space-y-2">
-                                <Label className="text-xs font-black uppercase text-slate-500 tracking-tight">GSTIN (Optional)</Label>
-                                <Input className="h-11 border-slate-200" placeholder="e.g. 27ABCDE1234F1Z5" />
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <Label className="text-xs font-black uppercase text-slate-500 tracking-tight">Contact Person <span className="text-rose-500">*</span></Label>
-                                <Input className="h-11 border-slate-200" placeholder="Full name" />
-                            </div>
-                            <div className="space-y-2">
-                                <Label className="text-xs font-black uppercase text-slate-500 tracking-tight">Relationship Status</Label>
-                                <Select defaultValue="Active">
-                                    <SelectTrigger className="h-11 border-slate-200 font-bold">
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="Active">Active Business</SelectItem>
-                                        <SelectItem value="Inactive">On Hold / Inactive</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
 
-                <Card className="border shadow-sm border-slate-200 overflow-hidden">
-                    <CardHeader className="py-3 px-6 bg-slate-50 border-b">
-                        <CardTitle className="text-[10px] font-black uppercase text-slate-500 tracking-wider flex items-center gap-2">
-                            <Phone className="h-3.5 w-3.5" /> Contact Details
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-8 space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <Label className="text-xs font-black uppercase text-slate-500 tracking-tight">Email Address <span className="text-rose-500">*</span></Label>
-                                <Input type="email" className="h-11 border-slate-200" placeholder="billing@company.com" />
-                            </div>
-                            <div className="space-y-2">
-                                <Label className="text-xs font-black uppercase text-slate-500 tracking-tight">Phone Number <span className="text-rose-500">*</span></Label>
-                                <Input className="h-11 border-slate-200 font-mono" placeholder="+91 9988776655" />
+            <div className="p-8 pb-4 space-y-8 bg-background flex-1 min-h-0 overflow-y-auto custom-scrollbar">
+                {/* Basic Info Section */}
+                <div className="space-y-5">
+                    <Label className="text-[10px] font-black uppercase text-blue-600 tracking-[0.2em] bg-blue-50 px-3 py-1 rounded-full">
+                        01. Identification
+                    </Label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest pl-1">Company Name *</Label>
+                            <Input className="h-10 text-xs font-bold border-slate-100 bg-slate-50/50 focus:bg-white transition-colors" placeholder="e.g. ABC Printers Pvt Ltd" />
+                        </div>
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest pl-1">Contact Person *</Label>
+                            <Input className="h-10 text-xs font-bold border-slate-100 bg-slate-50/50 focus:bg-white transition-colors" placeholder="e.g. Rahul Sharma" />
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest pl-1">Phone Number *</Label>
+                            <Input className="h-10 text-xs font-bold border-slate-100 bg-slate-50/50 focus:bg-white transition-colors" placeholder="e.g. +91 95400 XXXX" />
+                        </div>
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest pl-1">Email Address</Label>
+                            <Input type="email" className="h-10 text-xs font-bold border-slate-100 bg-slate-50/50 focus:bg-white transition-colors" placeholder="e.g. info@client.com" />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Billing & Tax Section */}
+                <div className="space-y-5">
+                    <Label className="text-[10px] font-black uppercase text-emerald-600 tracking-[0.2em] bg-emerald-50 px-3 py-1 rounded-full">
+                        02. Tax & Credit
+                    </Label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest pl-1">GST Number</Label>
+                            <div className="relative group">
+                                <Input className="h-10 text-xs font-bold border-slate-100 bg-slate-50/50 focus:bg-white transition-colors pr-16 uppercase" placeholder="22AAAAA0000A1Z5" />
+                                <Button variant="ghost" className="absolute right-1 top-1 h-8 text-[10px] font-bold text-blue-600 hover:bg-blue-50">
+                                    FETCH
+                                </Button>
                             </div>
                         </div>
-                    </CardContent>
-                </Card>
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest pl-1">Opening Balance</Label>
+                            <Input type="number" className="h-10 text-xs font-black border-slate-100 bg-slate-50/50 focus:bg-white transition-colors text-emerald-600" defaultValue="0.00" />
+                        </div>
+                    </div>
+                </div>
 
-                <div className="flex gap-3 justify-end pt-4 border-t sticky bottom-0 bg-background/80 backdrop-blur-sm pb-2 z-10">
-                    <Button variant="outline" className="font-bold h-11 px-8 text-slate-600 border-slate-200" onClick={onClose}>Cancel</Button>
-                    <Button
-                        className="h-11 px-10 bg-blue-600 hover:bg-blue-700 font-bold shadow-lg shadow-blue-200"
-                        onClick={() => {
-                            toast.success("Customer Saved", { description: "New customer profile has been created successfully." })
-                            onClose()
-                        }}
-                    >
-                        Save Customer Profile
-                    </Button>
+                {/* Address Details Section */}
+                <div className="space-y-5">
+                    <Label className="text-[10px] font-black uppercase text-amber-600 tracking-[0.2em] bg-amber-50 px-3 py-1 rounded-full">
+                        03. Logistics
+                    </Label>
+                    <div className="space-y-2">
+                        <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest pl-1">Shipping Address</Label>
+                        <Textarea className="min-h-[80px] text-xs font-medium border-slate-100 bg-slate-50/50 focus:bg-white transition-colors resize-none" placeholder="Street Address, Building, Area..." />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest pl-1">City</Label>
+                            <Input className="h-10 text-xs font-bold border-slate-100 bg-slate-50/50 focus:bg-white transition-colors" placeholder="City" />
+                        </div>
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest pl-1">State *</Label>
+                            <Select>
+                                <SelectTrigger className="h-10 text-xs font-bold border-slate-100 bg-slate-50/50">
+                                    <SelectValue placeholder="State" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="maharashtra">Maharashtra</SelectItem>
+                                    <SelectItem value="delhi">Delhi</SelectItem>
+                                    <SelectItem value="gujarat">Gujarat</SelectItem>
+                                    <SelectItem value="karnataka">Karnataka</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest pl-1">Pincode</Label>
+                            <Input className="h-10 text-xs font-bold border-slate-100 bg-slate-50/50" placeholder="Pincode" />
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <DialogFooter className="p-6 bg-slate-50/50 border-t flex flex-row items-center justify-end gap-3 px-8">
+                <Button variant="ghost" className="h-10 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600" onClick={onClose}>
+                    Cancel
+                </Button>
+                <Button
+                    className="h-10 px-8 bg-blue-600 hover:bg-blue-700 font-black uppercase text-[10px] tracking-widest shadow-lg shadow-blue-200"
+                    onClick={() => {
+                        toast.success("Customer Created", { description: "New customer profile has been added successfully." })
+                        onClose()
+                    }}
+                >
+                    Create Profile
+                </Button>
+            </DialogFooter>
         </DialogContent>
     )
 }

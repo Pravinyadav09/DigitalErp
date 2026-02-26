@@ -18,7 +18,7 @@ import {
     DropdownMenuItem, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
-    Dialog, DialogContent, DialogHeader,
+    Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader,
     DialogTitle, DialogTrigger,
 } from "@/components/ui/dialog"
 import {
@@ -86,201 +86,207 @@ function AddStockDialog({ onSave, onClose }: {
         : finalCost
 
     return (
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 border-none shadow-2xl">
-            <DialogHeader className="px-8 pt-7 pb-4 border-b bg-background sticky top-0 z-10">
-                <DialogTitle className="text-xl font-bold">Add New Stock</DialogTitle>
+        <DialogContent className="sm:max-w-[700px] p-0 overflow-hidden border-none shadow-2xl rounded-3xl flex flex-col max-h-[92vh]">
+            <DialogHeader className="px-10 pt-10 pb-6 text-left">
+                <div className="flex items-center gap-4 mb-2">
+                    <div className="p-3 rounded-2xl bg-blue-50 text-blue-600 shadow-sm border border-blue-100/50">
+                        <Layers className="h-5 w-5" />
+                    </div>
+                    <DialogTitle className="text-2xl font-black tracking-tight text-slate-800">Add Paper Stock</DialogTitle>
+                </div>
+                <DialogDescription className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 pl-1">
+                    Register new paper inventory and configure pricing
+                </DialogDescription>
             </DialogHeader>
 
-            <div className="p-8 space-y-6 bg-background">
-                <Card className="border shadow-sm">
-                    <CardHeader className="py-3 px-5 bg-muted/30 border-b">
-                        <CardTitle className="text-sm font-bold flex items-center gap-2">
-                            🗂️ New Stock Details
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-6 space-y-6">
-                        {/* Paper Name + Type */}
+            <div className="px-10 pb-6 space-y-8 flex-1 overflow-y-auto">
+                {/* Section 01: Identification */}
+                <div className="space-y-4">
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-[10px] font-black text-white">01</span>
+                        <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Identification</h3>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Paper Name <span className="text-rose-500">*</span></Label>
+                            <Input
+                                className="h-12 rounded-xl border-slate-200 bg-blue-50/30 font-bold text-slate-700 px-4 focus-visible:ring-blue-500/20"
+                                placeholder="e.g. 130 GSM Art Paper"
+                                value={name}
+                                onChange={e => setName(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Stock Category</Label>
+                            <Select value={type} onValueChange={setType}>
+                                <SelectTrigger className="h-12 rounded-xl border-slate-100 bg-white font-medium text-slate-600 px-4">
+                                    <SelectValue placeholder="Select Type" />
+                                </SelectTrigger>
+                                <SelectContent className="rounded-xl">
+                                    <SelectItem value="Glossy">Coated (Gloss/Matte)</SelectItem>
+                                    <SelectItem value="Matte">Matte</SelectItem>
+                                    <SelectItem value="Art Paper">Art Paper</SelectItem>
+                                    <SelectItem value="Texture">Texture / Uncoated</SelectItem>
+                                    <SelectItem value="Coated">Coated</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Section 02: Specifications */}
+                <div className="space-y-4">
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-[10px] font-black text-white">02</span>
+                        <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Technical Specs</h3>
+                    </div>
+                    <div className="grid grid-cols-3 gap-4">
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">GSM <span className="text-rose-500">*</span></Label>
+                            <Input
+                                type="number"
+                                className="h-12 rounded-xl border-none bg-blue-50 font-black text-slate-800 px-4 focus-visible:ring-blue-500/20"
+                                value={gsm}
+                                onChange={e => setGsm(e.target.value)}
+                                placeholder="200"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Width (In)</Label>
+                            <Input
+                                type="number"
+                                className="h-12 rounded-xl border-slate-100 bg-white font-medium text-slate-600 px-4 focus-visible:ring-blue-500/20"
+                                placeholder="e.g. 18"
+                                value={width}
+                                onChange={e => setWidth(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Height (In)</Label>
+                            <Input
+                                type="number"
+                                className="h-12 rounded-xl border-slate-100 bg-white font-medium text-slate-600 px-4 focus-visible:ring-blue-500/20"
+                                placeholder="e.g. 23"
+                                value={height}
+                                onChange={e => setHeight(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Section 03: Pricing */}
+                <div className="space-y-4">
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-[10px] font-black text-white">03</span>
+                        <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Commercials</h3>
+                    </div>
+                    <div className="p-6 rounded-2xl bg-slate-50 border border-slate-100 space-y-4">
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-1.5">
-                                <Label className="text-xs font-bold text-rose-500">Paper Name *</Label>
-                                <Input
-                                    className="h-9"
-                                    placeholder="e.g. 130 GSM Art Paper"
-                                    value={name}
-                                    onChange={e => setName(e.target.value)}
-                                />
-                            </div>
-                            <div className="space-y-1.5">
-                                <Label className="text-xs font-bold">Type</Label>
-                                <Select value={type} onValueChange={setType}>
-                                    <SelectTrigger className="h-9">
-                                        <SelectValue placeholder="Select Type" />
+                            <div className="space-y-2">
+                                <Label className="text-[10px] font-black uppercase text-slate-400 tracking-widest pl-1">Calc. Mode</Label>
+                                <Select value={calcMode} onValueChange={setCalcMode}>
+                                    <SelectTrigger className="h-11 rounded-xl border-slate-200 bg-white font-bold text-slate-700">
+                                        <SelectValue />
                                     </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="Glossy">Coated (Gloss/Matte)</SelectItem>
-                                        <SelectItem value="Matte">Matte</SelectItem>
-                                        <SelectItem value="Art Paper">Art Paper</SelectItem>
-                                        <SelectItem value="Texture">Texture / Uncoated</SelectItem>
-                                        <SelectItem value="Coated">Coated</SelectItem>
+                                    <SelectContent className="rounded-xl">
+                                        <SelectItem value="manual">Manual Per Sheet</SelectItem>
+                                        <SelectItem value="weight">By Weight (Price/Kg)</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
-                        </div>
-
-                        <Separator />
-
-                        {/* Technical Specifications */}
-                        <div>
-                            <p className="text-xs font-bold text-muted-foreground uppercase mb-3">Technical Specifications</p>
-                            <div className="grid grid-cols-3 gap-4">
-                                <div className="space-y-1.5">
-                                    <Label className="text-xs font-bold text-rose-500">GSM *</Label>
-                                    <Input
-                                        type="number"
-                                        className="h-9"
-                                        value={gsm}
-                                        onChange={e => setGsm(e.target.value)}
-                                        placeholder="200"
-                                    />
-                                </div>
-                                <div className="space-y-1.5">
-                                    <Label className="text-xs font-bold">Width (Inches)</Label>
-                                    <Input
-                                        type="number"
-                                        className="h-9"
-                                        placeholder="e.g. 18"
-                                        value={width}
-                                        onChange={e => setWidth(e.target.value)}
-                                    />
-                                </div>
-                                <div className="space-y-1.5">
-                                    <Label className="text-xs font-bold">Height (Inches)</Label>
-                                    <Input
-                                        type="number"
-                                        className="h-9"
-                                        placeholder="e.g. 23"
-                                        value={height}
-                                        onChange={e => setHeight(e.target.value)}
-                                    />
-                                </div>
+                            <div className="space-y-2">
+                                <Label className="text-[10px] font-black uppercase text-slate-400 tracking-widest pl-1">Final Per Sheet Cost (₹)</Label>
+                                <Input
+                                    readOnly={calcMode === "weight"}
+                                    className={`h-11 rounded-xl border-none shadow-sm font-black text-lg ${calcMode === 'weight' ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-600 text-white'}`}
+                                    value={calcMode === "weight" ? autoFinalCost : finalCost}
+                                    onChange={e => setFinalCost(e.target.value)}
+                                    placeholder="0.0000"
+                                />
                             </div>
                         </div>
 
-                        <Separator />
-
-                        {/* Pricing & Weight Calculation */}
-                        <div>
-                            <p className="text-xs font-bold text-muted-foreground uppercase mb-3">Pricing &amp; Weight Calculation</p>
-
-                            <div className="grid grid-cols-2 gap-4 mb-4">
-                                <div className="space-y-1.5">
-                                    <Label className="text-xs font-bold">Calculation Mode</Label>
-                                    <Select value={calcMode} onValueChange={setCalcMode}>
-                                        <SelectTrigger className="h-9">
-                                            <SelectValue />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="manual">Manual Per Sheet</SelectItem>
-                                            <SelectItem value="weight">By Weight (Price/Kg)</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                            </div>
-
-                            {/* By Weight fields */}
-                            {calcMode === "weight" && (
-                                <div className="grid grid-cols-3 gap-4 mb-4 p-4 bg-muted/20 rounded-lg border">
-                                    <div className="space-y-1.5">
-                                        <Label className="text-xs font-bold">Rim Weight (Kg)</Label>
-                                        <Input
-                                            type="number"
-                                            step="0.1"
-                                            className="h-9"
-                                            value={rimWeight}
-                                            onChange={e => setRimWeight(+e.target.value)}
-                                        />
-                                        <p className="text-[10px] text-muted-foreground">Weight of 1 Packet</p>
-                                    </div>
-                                    <div className="space-y-1.5">
-                                        <Label className="text-xs font-bold">Sheets / Packet</Label>
-                                        <Input
-                                            type="number"
-                                            className="h-9"
-                                            value={sheetsPerPacket}
-                                            onChange={e => setSheetsPerPacket(+e.target.value)}
-                                        />
-                                    </div>
-                                    <div className="space-y-1.5">
-                                        <Label className="text-xs font-bold">Price / Kg</Label>
-                                        <Input
-                                            type="number"
-                                            className="h-9"
-                                            value={pricePerKg}
-                                            onChange={e => setPricePerKg(+e.target.value)}
-                                        />
-                                    </div>
-                                </div>
-                            )}
-
-                            <div className="grid grid-cols-3 gap-4">
-                                <div className="space-y-1.5">
-                                    <Label className="text-xs font-bold text-blue-600">Final Cost Per Sheet (₹) *</Label>
+                        {calcMode === "weight" && (
+                            <div className="grid grid-cols-3 gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
+                                <div className="space-y-2">
+                                    <Label className="text-[9px] font-black uppercase text-slate-400 tracking-wider">Rim Wt (Kg)</Label>
                                     <Input
                                         type="number"
-                                        step="0.0001"
-                                        className="h-9 border-blue-300 focus-visible:ring-blue-400 font-bold"
-                                        value={calcMode === "weight" ? autoFinalCost : finalCost}
-                                        onChange={e => calcMode === "manual" && setFinalCost(e.target.value)}
-                                        readOnly={calcMode === "weight"}
-                                        placeholder="1.0000"
+                                        className="h-9 rounded-lg border-slate-200 bg-white text-xs font-bold"
+                                        value={rimWeight}
+                                        onChange={e => setRimWeight(+e.target.value)}
                                     />
                                 </div>
-                                <div className="space-y-1.5">
-                                    <Label className="text-xs font-bold">Initial Stock (Sheets)</Label>
+                                <div className="space-y-2">
+                                    <Label className="text-[9px] font-black uppercase text-slate-400 tracking-wider">Sheets/Pkt</Label>
                                     <Input
                                         type="number"
-                                        className="h-9"
-                                        value={initialStock}
-                                        onChange={e => setInitialStock(+e.target.value)}
+                                        className="h-9 rounded-lg border-slate-200 bg-white text-xs font-bold"
+                                        value={sheetsPerPacket}
+                                        onChange={e => setSheetsPerPacket(+e.target.value)}
                                     />
                                 </div>
-                                <div className="space-y-1.5">
-                                    <Label className="text-xs font-bold">Low Stock Alert</Label>
+                                <div className="space-y-2">
+                                    <Label className="text-[9px] font-black uppercase text-slate-400 tracking-wider">Rate/Kg (₹)</Label>
                                     <Input
                                         type="number"
-                                        className="h-9"
-                                        value={lowAlert}
-                                        onChange={e => setLowAlert(+e.target.value)}
+                                        className="h-9 rounded-lg border-slate-200 bg-white text-xs font-bold uppercase"
+                                        value={pricePerKg}
+                                        onChange={e => setPricePerKg(+e.target.value)}
                                     />
                                 </div>
                             </div>
-                        </div>
-                    </CardContent>
-                </Card>
+                        )}
+                    </div>
+                </div>
 
-                <div className="flex gap-3 justify-end">
-                    <Button variant="outline" className="font-bold h-10 px-6" onClick={onClose}>Cancel</Button>
-                    <Button
-                        className="h-10 px-8 bg-blue-600 hover:bg-blue-700 font-bold uppercase text-xs tracking-wider"
-                        onClick={() => {
-                            if (!name || !gsm) return
-                            onSave({
-                                id: Date.now(),
-                                name,
-                                type: type || "Glossy",
-                                size: width && height ? `${width}x${height}` : "—",
-                                gsm: +gsm,
-                                quantity: initialStock,
-                                unitPrice: +(calcMode === "weight" ? autoFinalCost : finalCost) || 0,
-                                lowStockAlert: lowAlert,
-                            })
-                            onClose()
-                        }}
-                    >
-                        <CheckCircle className="h-4 w-4 mr-2" /> Save Stock
-                    </Button>
+                {/* Inventory Alert */}
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Initial Opening Stock</Label>
+                        <Input
+                            type="number"
+                            className="h-12 rounded-xl border-slate-100 bg-white font-medium text-slate-600 px-4"
+                            value={initialStock}
+                            onChange={e => setInitialStock(+e.target.value)}
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1 text-rose-500">Low Stock Alert (Min Qty)</Label>
+                        <Input
+                            type="number"
+                            className="h-12 rounded-xl border-none bg-rose-50 font-black text-rose-700 px-4 shadow-sm"
+                            value={lowAlert}
+                            onChange={e => setLowAlert(+e.target.value)}
+                        />
+                    </div>
                 </div>
             </div>
+
+            <DialogFooter className="p-8 mt-2 flex flex-row items-center justify-end gap-3 px-10 border-t bg-slate-50/50">
+                <Button
+                    variant="ghost"
+                    className="h-11 px-8 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-colors"
+                    onClick={onClose}
+                >
+                    Cancel
+                </Button>
+                <Button
+                    className="h-11 px-8 rounded-xl bg-blue-600 hover:bg-blue-700 font-bold text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-200 transition-all"
+                    onClick={() => onSave({
+                        id: Math.random(),
+                        name,
+                        type,
+                        gsm: +gsm,
+                        size: `${width}x${height}`,
+                        quantity: initialStock,
+                        unitPrice: +autoFinalCost,
+                        lowStockAlert: lowAlert
+                    })}
+                >
+                    Register Stock
+                </Button>
+            </DialogFooter>
         </DialogContent>
     )
 }

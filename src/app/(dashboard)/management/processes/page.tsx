@@ -28,6 +28,16 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Textarea } from "@/components/ui/textarea"
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 type ProcessMaster = {
@@ -52,108 +62,22 @@ const initialProcesses: ProcessMaster[] = [
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function ProcessMastersPage() {
-    const [view, setView] = useState<"list" | "add" | "edit">("list")
+    const [isDialogOpen, setIsDialogOpen] = useState(false)
+    const [editMode, setEditMode] = useState(false)
     const [processes, setProcesses] = useState<ProcessMaster[]>(initialProcesses)
     const [search, setSearch] = useState("")
 
-    if (view === "add" || view === "edit") {
-        return (
-            <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                    <Button variant="ghost" size="icon" onClick={() => setView("list")}>
-                        <ArrowLeft className="h-5 w-5" />
-                    </Button>
-                    <h1 className="text-2xl font-bold tracking-tight">
-                        {view === "add" ? "Add Process Master" : "Edit Process Master"}
-                    </h1>
-                </div>
-
-                <div className="max-w-4xl mx-auto">
-                    <Card className="border shadow-lg">
-                        <CardHeader className="border-b bg-muted/30">
-                            <div className="flex items-center gap-2">
-                                <div className="p-1 rounded bg-slate-200">
-                                    <Plus className="h-4 w-4 text-slate-600" />
-                                </div>
-                                <CardTitle className="text-sm font-bold uppercase tracking-wider">New Process Definition</CardTitle>
-                            </div>
-                        </CardHeader>
-                        <CardContent className="p-8 space-y-8">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <Label className="text-xs font-black uppercase text-slate-500 tracking-tight">Process Name <span className="text-rose-500">*</span></Label>
-                                    <Input placeholder="e.g. Thermal Gloss Lamination" className="h-10 border-slate-200" />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label className="text-xs font-black uppercase text-slate-500 tracking-tight">Process Type <span className="text-rose-500">*</span></Label>
-                                    <Select>
-                                        <SelectTrigger className="h-10 border-slate-200">
-                                            <SelectValue placeholder="Select Category" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="binding">Binding</SelectItem>
-                                            <SelectItem value="finishing">Finishing</SelectItem>
-                                            <SelectItem value="lamination">Lamination</SelectItem>
-                                            <SelectItem value="printing">Printing</SelectItem>
-                                            <SelectItem value="others">Others</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div className="space-y-2">
-                                    <Label className="text-xs font-black uppercase text-slate-500 tracking-tight">Calculation Type <span className="text-rose-500">*</span></Label>
-                                    <Select defaultValue="per_sheet">
-                                        <SelectTrigger className="h-10 border-slate-200">
-                                            <SelectValue />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="per_sheet">Per Sheet</SelectItem>
-                                            <SelectItem value="per_sqft">Per Sq Ft</SelectItem>
-                                            <SelectItem value="per_book">Per Book</SelectItem>
-                                            <SelectItem value="per_set">Per Set</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                <div className="space-y-2">
-                                    <Label className="text-xs font-black uppercase text-slate-500 tracking-tight">Rate (₹) <span className="text-rose-500">*</span></Label>
-                                    <div className="relative">
-                                        <Input type="number" placeholder="0.00" className="h-10 font-bold border-slate-200" />
-                                        <p className="text-[10px] text-muted-foreground mt-1.5 italic">Base rate or default rate.</p>
-                                    </div>
-                                </div>
-                                <div className="space-y-2">
-                                    <Label className="text-xs font-black uppercase text-slate-500 tracking-tight">Setup Fee (₹)</Label>
-                                    <div className="relative">
-                                        <Input type="number" placeholder="0.00" className="h-10 font-bold border-slate-200" />
-                                        <p className="text-[10px] text-muted-foreground mt-1.5 italic">One-time fixed charge per job.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div className="space-y-2">
-                                    <Label className="text-xs font-black uppercase text-slate-500 tracking-tight">Min. Price (₹)</Label>
-                                    <div className="relative">
-                                        <Input type="number" placeholder="0.00" className="h-10 font-bold border-slate-200" />
-                                        <p className="text-[10px] text-muted-foreground mt-1.5 italic">Minimum amount to charge.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="flex gap-3 justify-end pt-6 border-t">
-                                <Button variant="outline" className="h-11 px-8 text-slate-600 border-slate-200 font-bold" onClick={() => setView("list")}>Cancel</Button>
-                                <Button className="h-11 px-10 bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200 font-bold" onClick={() => setView("list")}>
-                                    Save Process
-                                </Button>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-            </div>
-        )
+    const handleAdd = () => {
+        setEditMode(false)
+        setIsDialogOpen(true)
     }
+
+    const handleEdit = () => {
+        setEditMode(true)
+        setIsDialogOpen(true)
+    }
+
+
 
     return (
         <div className="space-y-4">
@@ -168,9 +92,130 @@ export default function ProcessMastersPage() {
                             <Cog className="h-4 w-4" />
                             <CardTitle className="text-sm">Post-Press Processes</CardTitle>
                         </div>
-                        <Button className="gap-2 bg-blue-600 hover:bg-blue-700 font-bold h-9 text-xs shadow-sm" onClick={() => setView("add")}>
-                            <Plus className="h-4 w-4" /> Add New Process
-                        </Button>
+                        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                            <DialogTrigger asChild>
+                                <Button className="gap-2 bg-blue-600 hover:bg-blue-700 font-bold h-9 text-xs shadow-sm" onClick={handleAdd}>
+                                    <Plus className="h-4 w-4" /> Add New Process
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[600px] p-0 overflow-hidden border-none shadow-2xl rounded-3xl flex flex-col max-h-[92vh]">
+                                <DialogHeader className="px-10 pt-10 pb-6 text-left border-b">
+                                    <div className="flex items-center gap-4 mb-2">
+                                        <div className="p-3 rounded-2xl bg-blue-50 text-blue-600 shadow-sm border border-blue-100/50">
+                                            <Cog className="h-5 w-5" />
+                                        </div>
+                                        <DialogTitle className="text-2xl font-black tracking-tight text-slate-800">
+                                            {editMode ? "Configure Process" : "Create New Process"}
+                                        </DialogTitle>
+                                    </div>
+                                    <DialogDescription className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 pl-1">
+                                        Set up calculations and rates for production
+                                    </DialogDescription>
+                                </DialogHeader>
+
+                                <div className="px-10 py-8 space-y-8 flex-1 overflow-y-auto custom-scrollbar">
+                                    {/* 01: Identification */}
+                                    <div className="space-y-4">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-[10px] font-black text-white">01</span>
+                                            <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Identification</h3>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="space-y-2">
+                                                <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Process Name</Label>
+                                                <Input
+                                                    placeholder="e.g. Center Stitching"
+                                                    className="h-12 rounded-xl border-slate-200 bg-blue-50/30 font-bold text-slate-700 px-4 focus-visible:ring-blue-500/20"
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Process Category</Label>
+                                                <Select>
+                                                    <SelectTrigger className="h-12 rounded-xl border-slate-100 bg-white font-medium text-slate-600 px-4">
+                                                        <SelectValue placeholder="Category" />
+                                                    </SelectTrigger>
+                                                    <SelectContent className="rounded-xl">
+                                                        <SelectItem value="binding">Binding</SelectItem>
+                                                        <SelectItem value="finishing">Finishing</SelectItem>
+                                                        <SelectItem value="lamination">Lamination</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* 02: Rate Calculation */}
+                                    <div className="space-y-4">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-[10px] font-black text-white">02</span>
+                                            <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Rate Calculation</h3>
+                                        </div>
+                                        <div className="grid grid-cols-3 gap-4">
+                                            <div className="space-y-2">
+                                                <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Rate Type</Label>
+                                                <Select defaultValue="per_sheet">
+                                                    <SelectTrigger className="h-12 rounded-xl border-slate-100 bg-white font-medium text-slate-600 px-4 text-xs">
+                                                        <SelectValue />
+                                                    </SelectTrigger>
+                                                    <SelectContent className="rounded-xl text-xs">
+                                                        <SelectItem value="per_sheet">Per Sheet</SelectItem>
+                                                        <SelectItem value="per_sqft">Per Sq Ft</SelectItem>
+                                                        <SelectItem value="per_book">Per Book</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Rate (₹)</Label>
+                                                <Input
+                                                    type="number"
+                                                    placeholder="0.00"
+                                                    className="h-12 rounded-xl border-none bg-emerald-50 font-black text-emerald-700 px-4 focus-visible:ring-blue-500/20 shadow-sm"
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Min. Price (₹)</Label>
+                                                <Input
+                                                    type="number"
+                                                    placeholder="0.00"
+                                                    className="h-12 rounded-xl border-none bg-slate-100 font-black text-slate-800 px-4 focus-visible:ring-blue-500/20"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* 03: Additional Info */}
+                                    <div className="space-y-4">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-[10px] font-black text-white">03</span>
+                                            <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Additional Info</h3>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Internal Notes</Label>
+                                            <Textarea
+                                                placeholder="Special instructions for this process..."
+                                                className="min-h-[100px] rounded-xl border-slate-100 bg-white text-xs font-medium text-slate-600 px-4 pt-4 resize-none focus-visible:ring-blue-500/20"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <DialogFooter className="p-8 mt-2 flex flex-row items-center justify-end gap-3 px-10 border-t bg-slate-50/50">
+                                    <Button
+                                        variant="ghost"
+                                        className="h-11 px-8 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-colors"
+                                        onClick={() => setIsDialogOpen(false)}
+                                    >
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        className="h-11 px-8 rounded-xl bg-blue-600 hover:bg-blue-700 font-bold text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-200 transition-all font-bold"
+                                        onClick={() => setIsDialogOpen(false)}
+                                    >
+                                        Save Configuration
+                                    </Button>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
                     </div>
                 </CardHeader>
                 <CardContent className="pt-6">
@@ -243,7 +288,7 @@ export default function ProcessMastersPage() {
                                         </TableCell>
                                         <TableCell className="text-right">
                                             <div className="flex items-center justify-end gap-1 px-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                <Button size="icon" variant="outline" className="h-8 w-8 border-blue-100 text-blue-600 hover:bg-blue-50" onClick={() => setView("edit")}>
+                                                <Button size="icon" variant="outline" className="h-8 w-8 border-blue-100 text-blue-600 hover:bg-blue-50" onClick={handleEdit}>
                                                     <Edit className="h-4 w-4" />
                                                 </Button>
                                                 <Button size="icon" variant="outline" className="h-8 w-8 border-rose-100 text-rose-600 hover:bg-rose-50">

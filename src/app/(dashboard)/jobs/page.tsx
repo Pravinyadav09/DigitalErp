@@ -15,6 +15,7 @@ import {
     AlertCircle,
     CheckCircle,
     X,
+    Calculator,
 } from "lucide-react"
 import {
     Table,
@@ -38,6 +39,8 @@ import {
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -172,130 +175,127 @@ const statusConfig: Record<string, { label: string; className: string }> = {
 // ─── New Job Card Form ────────────────────────────────────────────────────────
 function NewJobCardDialog({ onClose }: { onClose: () => void }) {
     const [items, setItems] = useState([
-        { id: 1, desc: "", specs: "", qty: "" },
+        { id: 1, desc: "Sequi quisquam omnis qui.", qty: "395" },
+        { id: 2, desc: "Est dolorem aliquid.", qty: "755" },
     ])
 
-    const addItem = () => setItems(prev => [...prev, { id: Date.now(), desc: "", specs: "", qty: "" }])
+    const addItem = () => setItems(prev => [...prev, { id: Date.now(), desc: "", qty: "" }])
     const removeItem = (id: number) => setItems(prev => prev.filter(i => i.id !== id))
 
     return (
-        <DialogContent className="max-w-4xl max-h-[92vh] overflow-y-auto p-0 border-none shadow-2xl">
-            <DialogHeader className="px-8 pt-8 pb-4 border-b bg-background sticky top-0 z-10">
-                <DialogTitle className="text-xl font-bold">Create Job Card</DialogTitle>
+        <DialogContent className="max-w-6xl p-0 overflow-hidden border-none shadow-2xl rounded-3xl flex flex-col max-h-[92vh]">
+            <DialogHeader className="px-10 pt-10 pb-6 text-left border-b">
+                <div className="flex items-center gap-4 mb-2">
+                    <div className="p-3 rounded-2xl bg-blue-50 text-blue-600 shadow-sm border border-blue-100/50">
+                        <Plus className="h-5 w-5" />
+                    </div>
+                    <DialogTitle className="text-2xl font-black tracking-tight text-slate-800">Create Job Ticket</DialogTitle>
+                </div>
+                <DialogDescription className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 pl-1">
+                    Initialize a new production workflow and specs
+                </DialogDescription>
             </DialogHeader>
 
-            <div className="p-8 space-y-6 bg-background">
-                {/* Job Details */}
-                <Card className="border shadow-sm">
-                    <CardHeader className="py-3 px-5 bg-muted/30 border-b">
-                        <CardTitle className="text-sm font-bold flex items-center gap-2">
-                            📋 Job Details
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-5">
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div className="space-y-1.5">
-                                <Label className="text-xs font-bold">Job No.</Label>
-                                <Input defaultValue="JB-2026-0035" className="h-9" readOnly />
-                            </div>
-                            <div className="space-y-1.5">
-                                <Label className="text-xs font-bold text-rose-500">Customer *</Label>
-                                <Select>
-                                    <SelectTrigger className="h-9"><SelectValue placeholder="Select Customer" /></SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="dk">Denesik-Keeling</SelectItem>
-                                        <SelectItem value="cg">Crona Group</SelectItem>
-                                        <SelectItem value="sl">Schuster Ltd</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <div className="space-y-1.5">
-                                <Label className="text-xs font-bold">Start Date</Label>
-                                <Input type="date" className="h-9" defaultValue="2026-02-25" />
-                            </div>
-                            <div className="space-y-1.5">
-                                <Label className="text-xs font-bold text-rose-500">Delivery Deadline</Label>
-                                <Input type="date" className="h-9 border-rose-200 focus-visible:ring-rose-400" />
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-
-                {/* Production Items */}
-                <Card className="border shadow-sm">
-                    <CardHeader className="py-3 px-5 bg-muted/30 border-b flex flex-row items-center justify-between space-y-0">
-                        <CardTitle className="text-sm font-bold">Production Items</CardTitle>
-                        <Button size="sm" variant="outline" className="h-8 gap-2 text-xs font-bold" onClick={addItem}>
+            <div className="px-10 py-8 space-y-8 flex-1 overflow-y-auto custom-scrollbar">
+                {/* Items Table Section */}
+                <div className="space-y-4">
+                    <div className="flex items-center justify-between px-1">
+                        <Label className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Description & Quantities</Label>
+                        <Button size="sm" variant="outline" className="h-8 gap-2 bg-white text-blue-600 font-bold border-2 border-slate-100" onClick={addItem}>
                             <Plus className="h-3 w-3" /> Add Item
                         </Button>
-                    </CardHeader>
-                    <CardContent className="p-5 space-y-3">
-                        <div className="grid grid-cols-12 gap-2 text-[11px] font-bold uppercase text-muted-foreground px-1 pb-1">
-                            <span className="col-span-7">Description / Specs</span>
-                            <span className="col-span-3">Quantity</span>
-                            <span className="col-span-2 text-right">Action</span>
-                        </div>
-                        {items.map((item) => (
-                            <div key={item.id} className="grid grid-cols-12 gap-2 items-start border rounded-lg p-3 bg-muted/10">
-                                <div className="col-span-7 space-y-2">
-                                    <Input
-                                        placeholder="e.g. Print Job"
-                                        className="h-8 text-sm font-bold"
-                                        value={item.desc}
-                                        onChange={e => setItems(prev => prev.map(i => i.id === item.id ? { ...i, desc: e.target.value } : i))}
-                                    />
-                                    <Textarea
-                                        placeholder="• Stock: Chromo Paper (170GSM)&#10;• Process: Gloss Lamination"
-                                        className="text-xs h-16 resize-none"
-                                        value={item.specs}
-                                        onChange={e => setItems(prev => prev.map(i => i.id === item.id ? { ...i, specs: e.target.value } : i))}
-                                    />
-                                </div>
-                                <div className="col-span-3">
-                                    <Input
-                                        type="number"
-                                        placeholder="1000"
-                                        className="h-8 font-bold"
-                                        value={item.qty}
-                                        onChange={e => setItems(prev => prev.map(i => i.id === item.id ? { ...i, qty: e.target.value } : i))}
-                                    />
-                                </div>
-                                <div className="col-span-2 flex justify-end">
-                                    <Button size="icon" variant="ghost" className="h-8 w-8 text-rose-500 hover:bg-rose-50" onClick={() => removeItem(item.id)}>
-                                        <X className="h-4 w-4" />
-                                    </Button>
-                                </div>
+                    </div>
+
+                    <div className="rounded-2xl border bg-white overflow-hidden shadow-sm">
+                        <Table>
+                            <TableHeader>
+                                <TableRow className="bg-slate-50/50 hover:bg-slate-50/50 border-b">
+                                    <TableHead className="text-[10px] font-black uppercase text-slate-500 py-3 px-6">Description / Specs</TableHead>
+                                    <TableHead className="text-[10px] font-black uppercase text-slate-500 text-center w-[150px]">Quantity</TableHead>
+                                    <TableHead className="text-[10px] font-black uppercase text-slate-500 text-right px-6 w-[80px]">Action</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {items.map((item) => (
+                                    <TableRow key={item.id} className="border-b last:border-0 group">
+                                        <TableCell className="p-4 px-6">
+                                            <div className="relative">
+                                                <Textarea
+                                                    placeholder="Enter job details, specs..."
+                                                    className="min-h-[60px] resize-none border-none shadow-none focus-visible:ring-0 p-0 text-sm font-medium"
+                                                    value={item.desc}
+                                                    onChange={e => setItems(prev => prev.map(i => i.id === item.id ? { ...i, desc: e.target.value } : i))}
+                                                />
+                                                <div className="absolute right-0 bottom-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <Calculator className="h-4 w-4 text-slate-300" />
+                                                </div>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="text-center bg-slate-50/30">
+                                            <Input
+                                                type="number"
+                                                className="h-10 text-center font-bold border-none shadow-none focus-visible:ring-1"
+                                                value={item.qty}
+                                                onChange={e => setItems(prev => prev.map(i => i.id === item.id ? { ...i, qty: e.target.value } : i))}
+                                            />
+                                        </TableCell>
+                                        <TableCell className="text-right px-6">
+                                            <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-300 hover:text-rose-600 hover:bg-rose-50" onClick={() => removeItem(item.id)}>
+                                                <X className="h-4 w-4" />
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </div>
+                </div>
+
+                {/* Footer Inputs Section */}
+                <div className="grid grid-cols-1 gap-6">
+                    <div className="space-y-6 bg-white p-6 rounded-2xl border shadow-sm">
+                        <div className="space-y-3">
+                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Design Image</Label>
+                            <div className="flex items-center gap-4">
+                                <label className="flex flex-col items-center justify-center h-10 px-6 border-2 border-slate-100 rounded-xl bg-slate-50 hover:bg-slate-100 cursor-pointer transition-colors">
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-xs font-bold text-slate-600">Choose File</span>
+                                    </div>
+                                    <input type="file" className="hidden" />
+                                </label>
+                                <span className="text-xs text-slate-400 font-medium">No file chosen</span>
                             </div>
-                        ))}
-                    </CardContent>
-                </Card>
-
-                {/* Design Image & Notes */}
-                <Card className="border shadow-sm">
-                    <CardContent className="p-5 space-y-4">
-                        <div className="space-y-1.5">
-                            <Label className="text-xs font-bold">Design Image</Label>
-                            <Input type="file" accept="image/*" className="h-9 text-xs" />
-                            <p className="text-[10px] text-muted-foreground">Optional. Upload a design image for reference. Max 5MB.</p>
+                            <p className="text-[10px] text-slate-400 font-bold italic">Optional. Upload a design image for reference. Max 5MB.</p>
                         </div>
-                        <div className="space-y-1.5">
-                            <Label className="text-xs font-bold">Notes / Special Instructions</Label>
-                            <Textarea placeholder="e.g. Urgent Delivery, Use specific courier..." className="resize-none h-20 text-sm" />
-                        </div>
-                    </CardContent>
-                </Card>
 
-                <div className="flex gap-3 justify-end pt-2">
+                        <div className="space-y-3">
+                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Notes / Special Instructions</Label>
+                            <Textarea
+                                placeholder="e.g. Urgent Delivery, Use specific courier..."
+                                className="resize-none min-h-[100px] border-2 border-slate-100 rounded-xl bg-slate-50/30 focus:bg-white transition-all text-sm"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <DialogFooter className="p-8 mt-2 flex flex-row items-center justify-end gap-3 px-10 border-t bg-slate-50/50">
                     <Button
-                        className="h-10 px-8 bg-emerald-600 hover:bg-emerald-700 font-bold uppercase text-xs tracking-wider"
+                        variant="ghost"
+                        className="h-11 px-8 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-colors"
+                        onClick={onClose}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        className="h-11 px-10 bg-emerald-600 hover:bg-emerald-700 font-bold text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-200 transition-all font-bold"
                         onClick={() => {
-                            toast.success("Job Card Created", { description: "Job JB-2026-0045 has been generated successfully." })
+                            toast.success("Job Ticket Created", { description: "Job JB-2026-0045 has been generated successfully." })
                             onClose()
                         }}
                     >
-                        <CheckCircle className="h-4 w-4 mr-2" /> Create Job Card
+                        Create Job Ticket
                     </Button>
-                </div>
+                </DialogFooter>
             </div>
         </DialogContent>
     )

@@ -12,6 +12,18 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator"
@@ -42,6 +54,7 @@ const permissionList = [
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function RolesPage() {
     const [roles, setRoles] = useState<Role[]>(initialRoles)
+    const [isAddRoleOpen, setIsAddRoleOpen] = useState(false)
 
     return (
         <div className="space-y-4">
@@ -59,9 +72,74 @@ export default function RolesPage() {
                                     <UserCog className="h-4 w-4" />
                                     <CardTitle className="text-sm font-medium">Defined Roles</CardTitle>
                                 </div>
-                                <Button className="h-8 gap-2 bg-blue-600 hover:bg-blue-700 font-bold text-xs">
-                                    <Plus className="h-4 w-4" /> Define New Role
-                                </Button>
+                                <Dialog open={isAddRoleOpen} onOpenChange={setIsAddRoleOpen}>
+                                    <DialogTrigger asChild>
+                                        <Button className="h-9 gap-2 bg-blue-600 hover:bg-blue-700 font-bold text-xs shadow-sm">
+                                            <Plus className="h-4 w-4" /> Define New Role
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden border-none shadow-2xl rounded-3xl flex flex-col max-h-[92vh]">
+                                        <DialogHeader className="px-10 pt-10 pb-6 text-left">
+                                            <div className="flex items-center gap-4 mb-2">
+                                                <div className="p-3 rounded-2xl bg-blue-50 text-blue-600 shadow-sm border border-blue-100/50">
+                                                    <ShieldCheck className="h-5 w-5" />
+                                                </div>
+                                                <DialogTitle className="text-2xl font-black tracking-tight text-slate-800">Define New Role</DialogTitle>
+                                            </div>
+                                            <DialogDescription className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 pl-1">
+                                                Configure access levels and permissions
+                                            </DialogDescription>
+                                        </DialogHeader>
+
+                                        <div className="px-10 pb-4 space-y-6 flex-1 overflow-y-auto">
+                                            <div className="space-y-2">
+                                                <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Role Title</Label>
+                                                <Input
+                                                    placeholder="e.g. Regional Manager"
+                                                    className="h-12 rounded-xl border-slate-200 bg-slate-50/30 font-bold text-slate-700 px-4 focus-visible:ring-blue-500/20"
+                                                />
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Role Description</Label>
+                                                <Textarea
+                                                    placeholder="Describe the responsibilities of this role..."
+                                                    className="min-h-[100px] rounded-xl border-slate-100 bg-white text-xs font-medium text-slate-600 px-4 pt-4 resize-none focus-visible:ring-blue-500/20"
+                                                />
+                                            </div>
+
+                                            <div className="space-y-4">
+                                                <Label className="text-[10px] font-black uppercase text-blue-600 tracking-[0.2em] bg-blue-50 px-3 py-1 rounded-full w-fit">
+                                                    Default Access Scope
+                                                </Label>
+                                                <div className="grid grid-cols-2 gap-3">
+                                                    {permissionList.slice(0, 4).map((p, i) => (
+                                                        <div key={i} className="flex items-center gap-2 border border-slate-100 rounded-xl p-3 hover:bg-slate-50 transition-colors cursor-pointer group">
+                                                            <Checkbox id={`p-${i}`} checked={i === 0} className="rounded-lg border-slate-300" />
+                                                            <label htmlFor={`p-${i}`} className="text-[10px] font-black uppercase text-slate-500 tracking-wider cursor-pointer group-hover:text-slate-800 transition-colors">{p}</label>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <DialogFooter className="p-8 mt-2 flex flex-row items-center justify-end gap-3 px-10 border-t bg-slate-50/50">
+                                            <Button
+                                                variant="ghost"
+                                                className="h-11 px-8 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-colors"
+                                                onClick={() => setIsAddRoleOpen(false)}
+                                            >
+                                                Cancel
+                                            </Button>
+                                            <Button
+                                                className="h-11 px-8 rounded-xl bg-blue-600 hover:bg-blue-700 font-bold text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-200 transition-all"
+                                                onClick={() => setIsAddRoleOpen(false)}
+                                            >
+                                                Create Role
+                                            </Button>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
                             </div>
                         </CardHeader>
                         <CardContent className="pt-6">

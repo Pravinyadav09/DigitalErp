@@ -38,6 +38,20 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
+import { Separator } from "@/components/ui/separator"
+
 const paperStock = [
     {
         name: "170 GSM Art Paper",
@@ -83,18 +97,105 @@ export default function InventoryPage() {
         <div className="space-y-6">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between px-1">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Stock & Inventory</h1>
+                    <h1 className="text-3xl font-bold tracking-tight text-slate-800">Stock & Inventory</h1>
                     <p className="text-muted-foreground font-medium">
                         Monitor paper stock, ink levels, and consumable inventory.
                     </p>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Button variant="outline" className="gap-2">
+                    <Button variant="outline" className="gap-2 h-11 px-6 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-slate-800 border-slate-200">
                         <History className="h-4 w-4" /> Usage History
                     </Button>
-                    <Button className="gap-2 bg-primary">
-                        <Plus className="h-4 w-4" /> Add Stock
-                    </Button>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button className="gap-2 h-11 px-8 rounded-xl bg-blue-600 hover:bg-blue-700 font-bold text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-200 transition-all">
+                                <Plus className="h-4 w-4" /> Add Stock
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[600px] p-0 overflow-hidden border-none shadow-2xl rounded-3xl flex flex-col max-h-[92vh]">
+                            <DialogHeader className="px-10 pt-10 pb-6 text-left border-b">
+                                <div className="flex items-center gap-4 mb-2">
+                                    <div className="p-3 rounded-2xl bg-blue-50 text-blue-600 shadow-sm border border-blue-100/50">
+                                        <Package className="h-5 w-5" />
+                                    </div>
+                                    <DialogTitle className="text-2xl font-black tracking-tight text-slate-800">Register New Stock</DialogTitle>
+                                </div>
+                                <DialogDescription className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 pl-1">
+                                    Add new paper, ink or media to warehouse inventory
+                                </DialogDescription>
+                            </DialogHeader>
+
+                            <div className="px-10 py-8 space-y-8 flex-1 overflow-y-auto custom-scrollbar">
+                                {/* 01: Item Details */}
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-[10px] font-black text-white">01</span>
+                                        <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Item Details</h3>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="col-span-2 space-y-2">
+                                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Item / Paper Name <span className="text-rose-500">*</span></Label>
+                                            <Input className="h-12 rounded-xl border-slate-200 bg-blue-50/30 font-bold text-slate-700 px-4 focus-visible:ring-blue-500/20" placeholder="e.g. 170 GSM Art Paper" />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Stock Category</Label>
+                                            <Select>
+                                                <SelectTrigger className="h-12 rounded-xl border-slate-100 bg-white font-medium text-slate-600 px-4">
+                                                    <SelectValue placeholder="Select Category" />
+                                                </SelectTrigger>
+                                                <SelectContent className="rounded-xl">
+                                                    <SelectItem value="paper">Paper Stock</SelectItem>
+                                                    <SelectItem value="ink">Inks & Toners</SelectItem>
+                                                    <SelectItem value="media">Wide Format Media</SelectItem>
+                                                    <SelectItem value="others">Other Consumables</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Initial Quantity</Label>
+                                            <Input type="number" className="h-12 rounded-xl border-slate-100 bg-white font-medium text-slate-600 px-4" placeholder="0" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* 02: Specifications */}
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-[10px] font-black text-white">02</span>
+                                        <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Specifications</h3>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-2">
+                                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Cost Per Unit (₹)</Label>
+                                            <Input type="number" step="0.01" className="h-12 rounded-xl border-none bg-emerald-50 font-black text-emerald-700 px-4 shadow-sm" placeholder="0.00" />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label className="text-[10px] font-black uppercase text-rose-500 tracking-widest pl-1">Low Stock Alert</Label>
+                                            <Input type="number" className="h-12 rounded-xl border-none bg-rose-50 font-black text-rose-700 px-4 shadow-sm" placeholder="10" />
+                                        </div>
+                                        <div className="col-span-2 space-y-2">
+                                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Storage Location / Internal Notes</Label>
+                                            <Textarea className="min-h-[80px] rounded-xl border-slate-100 bg-white font-medium text-slate-600 p-4 resize-none focus-visible:ring-blue-500/20" placeholder="e.g. Warehouse Section B, Shelf 4..." />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <DialogFooter className="p-8 mt-2 flex flex-row items-center justify-end gap-3 px-10 border-t bg-slate-50/50">
+                                <Button
+                                    variant="ghost"
+                                    className="h-11 px-8 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-colors"
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    className="h-11 px-8 rounded-xl bg-blue-600 hover:bg-blue-700 font-bold text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-200 transition-all font-bold"
+                                >
+                                    Register Stock
+                                </Button>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             </div>
 

@@ -18,7 +18,7 @@ import {
     DropdownMenuItem, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
-    Dialog, DialogContent, DialogHeader,
+    Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader,
     DialogTitle, DialogTrigger,
 } from "@/components/ui/dialog"
 import {
@@ -73,104 +73,156 @@ function AddMediaDialog({ onSave, onClose }: {
     const [lowAlert, setLowAlert] = useState(5)
 
     return (
-        <DialogContent className="max-w-xl p-0 border-none shadow-2xl">
-            <DialogHeader className="px-8 pt-7 pb-4 border-b bg-background sticky top-0 z-10">
-                <DialogTitle className="text-xl font-bold">Add Wide Format Media</DialogTitle>
+        <DialogContent className="sm:max-w-[600px] p-0 overflow-hidden border-none shadow-2xl rounded-3xl flex flex-col max-h-[92vh]">
+            <DialogHeader className="px-10 pt-10 pb-6 text-left border-b">
+                <div className="flex items-center gap-4 mb-2">
+                    <div className="p-3 rounded-2xl bg-blue-50 text-blue-600 shadow-sm border border-blue-100/50">
+                        <Maximize className="h-5 w-5" />
+                    </div>
+                    <DialogTitle className="text-2xl font-black tracking-tight text-slate-800">Add Media Stock</DialogTitle>
+                </div>
+                <DialogDescription className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 pl-1">
+                    Register new wide format rolls and configure pricing
+                </DialogDescription>
             </DialogHeader>
 
-            <div className="p-8 space-y-6 bg-background">
-                <Card className="border shadow-sm">
-                    <CardHeader className="py-3 px-5 bg-muted/30 border-b">
-                        <CardTitle className="text-sm font-bold flex items-center gap-2">
-                            New Roll Stock Entry
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-6 space-y-6">
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-1.5">
-                                <Label className="text-xs font-bold text-rose-500">Media Name *</Label>
-                                <Input className="h-9" placeholder="e.g. Star Flex Gloss" value={name} onChange={e => setName(e.target.value)} />
-                            </div>
-                            <div className="space-y-1.5">
-                                <Label className="text-xs font-bold">Category</Label>
-                                <Select value={type} onValueChange={setType}>
-                                    <SelectTrigger className="h-9">
-                                        <SelectValue placeholder="Select Category" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="Flex">Flex</SelectItem>
-                                        <SelectItem value="Vinyl">Vinyl</SelectItem>
-                                        <SelectItem value="Fabric">Fabric / Canvas</SelectItem>
-                                        <SelectItem value="Film">Film</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
+            <div className="px-10 py-8 space-y-8 flex-1 overflow-y-auto custom-scrollbar">
+                {/* 01: Identification */}
+                <div className="space-y-4">
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-[10px] font-black text-white">01</span>
+                        <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Identification</h3>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Media Name <span className="text-rose-500">*</span></Label>
+                            <Input
+                                className="h-12 rounded-xl border-slate-200 bg-blue-50/30 font-bold text-slate-700 px-4 focus-visible:ring-blue-500/20"
+                                placeholder="e.g. Star Flex Gloss"
+                                value={name}
+                                onChange={e => setName(e.target.value)}
+                            />
                         </div>
-
-                        <Separator />
-
-                        <div className="grid grid-cols-3 gap-4">
-                            <div className="space-y-1.5">
-                                <Label className="text-xs font-bold">Width (Inches)</Label>
-                                <Input type="number" className="h-9" value={width} onChange={e => setWidth(e.target.value)} />
-                            </div>
-                            <div className="space-y-1.5">
-                                <Label className="text-xs font-bold">Roll Length</Label>
-                                <Input type="number" className="h-9" value={length} onChange={e => setLength(e.target.value)} />
-                            </div>
-                            <div className="space-y-1.5">
-                                <Label className="text-xs font-bold">Unit</Label>
-                                <Select value={unit} onValueChange={(v: "Mtr" | "Ft") => setUnit(v)}>
-                                    <SelectTrigger className="h-9">
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="Mtr">Meters</SelectItem>
-                                        <SelectItem value="Ft">Feet</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Category</Label>
+                            <Select value={type} onValueChange={setType}>
+                                <SelectTrigger className="h-12 rounded-xl border-slate-100 bg-white font-medium text-slate-600 px-4">
+                                    <SelectValue placeholder="Select Category" />
+                                </SelectTrigger>
+                                <SelectContent className="rounded-xl">
+                                    <SelectItem value="Flex">Flex</SelectItem>
+                                    <SelectItem value="Vinyl">Vinyl</SelectItem>
+                                    <SelectItem value="Fabric">Fabric / Canvas</SelectItem>
+                                    <SelectItem value="Film">Film</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
+                    </div>
+                </div>
 
-                        <Separator />
-
-                        <div className="grid grid-cols-3 gap-4">
-                            <div className="space-y-1.5">
-                                <Label className="text-xs font-bold">Initial Rolls</Label>
-                                <Input type="number" className="h-9" value={qty} onChange={e => setQty(+e.target.value)} />
-                            </div>
-                            <div className="space-y-1.5">
-                                <Label className="text-xs font-bold">Cost / SqFt (₹)</Label>
-                                <Input type="number" step="0.01" className="h-9" value={cost} onChange={e => setCost(+e.target.value)} />
-                            </div>
-                            <div className="space-y-1.5">
-                                <Label className="text-xs font-bold text-amber-600">Low Stock (Rolls)</Label>
-                                <Input type="number" className="h-9 border-amber-200" value={lowAlert} onChange={e => setLowAlert(+e.target.value)} />
-                            </div>
+                {/* 02: Specs */}
+                <div className="space-y-4">
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-[10px] font-black text-white">02</span>
+                        <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Technical Specs</h3>
+                    </div>
+                    <div className="grid grid-cols-3 gap-4">
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Width (In)</Label>
+                            <Input
+                                type="number"
+                                className="h-12 rounded-xl border-none bg-blue-50 font-black text-slate-800 px-4 focus-visible:ring-blue-500/20"
+                                value={width}
+                                onChange={e => setWidth(e.target.value)}
+                            />
                         </div>
-                    </CardContent>
-                </Card>
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Length</Label>
+                            <Input
+                                type="number"
+                                className="h-12 rounded-xl border-slate-100 bg-white font-medium text-slate-600 px-4 focus-visible:ring-blue-500/20"
+                                value={length}
+                                onChange={e => setLength(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Unit</Label>
+                            <Select value={unit} onValueChange={(v: "Mtr" | "Ft") => setUnit(v)}>
+                                <SelectTrigger className="h-12 rounded-xl border-slate-100 bg-white font-medium text-slate-600 px-4">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent className="rounded-xl">
+                                    <SelectItem value="Mtr">Meters</SelectItem>
+                                    <SelectItem value="Ft">Feet</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+                </div>
 
-                <div className="flex gap-3 justify-end pt-1">
-                    <Button variant="outline" className="font-bold h-10 px-6" onClick={onClose}>Cancel</Button>
-                    <Button
-                        className="h-10 px-8 bg-blue-600 hover:bg-blue-700 font-bold"
-                        onClick={() => {
-                            if (!name) return
-                            onSave({
-                                id: Date.now(),
-                                name, type: type || "Flex",
-                                width: +width || 0, length: +length || 0,
-                                unit, quantity: qty,
-                                costPerSqFt: cost, lowStockAlert: lowAlert
-                            })
-                            onClose()
-                        }}
-                    >
-                        <CheckCircle className="h-4 w-4 mr-2" /> Save Media
-                    </Button>
+                {/* 03: Inventory & Cost */}
+                <div className="space-y-4">
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-[10px] font-black text-white">03</span>
+                        <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Inventory & Cost</h3>
+                    </div>
+                    <div className="grid grid-cols-3 gap-4">
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Quantity (Rolls)</Label>
+                            <Input
+                                type="number"
+                                className="h-12 rounded-xl border-slate-100 bg-white font-medium text-slate-600 px-4"
+                                value={qty}
+                                onChange={e => setQty(Number(e.target.value))}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Cost / SqFt (₹)</Label>
+                            <Input
+                                type="number"
+                                className="h-12 rounded-xl border-none bg-emerald-50 font-black text-emerald-700 px-4 shadow-sm"
+                                value={cost}
+                                onChange={e => setCost(Number(e.target.value))}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest pl-1">Low Stock Alert</Label>
+                            <Input
+                                type="number"
+                                className="h-12 rounded-xl border-none bg-rose-50 font-black text-rose-700 px-4"
+                                value={lowAlert}
+                                onChange={e => setLowAlert(Number(e.target.value))}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <DialogFooter className="p-8 mt-2 flex flex-row items-center justify-end gap-3 px-10 border-t bg-slate-50/50">
+                <Button
+                    variant="ghost"
+                    className="h-11 px-8 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-colors"
+                    onClick={onClose}
+                >
+                    Cancel
+                </Button>
+                <Button
+                    className="h-11 px-8 rounded-xl bg-blue-600 hover:bg-blue-700 font-bold text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-200 transition-all"
+                    onClick={() => {
+                        if (!name) return
+                        onSave({
+                            id: Date.now(),
+                            name, type: type || "Flex",
+                            width: +width || 0, length: +length || 0,
+                            unit, quantity: qty,
+                            costPerSqFt: cost, lowStockAlert: lowAlert
+                        })
+                        onClose()
+                    }}
+                >
+                    Save Media Details
+                </Button>
+            </DialogFooter>
         </DialogContent>
     )
 }
